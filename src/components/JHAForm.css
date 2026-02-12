@@ -1,0 +1,310 @@
+.jha-form {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #1a1a1a;
+}
+
+.jha-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #0066cc;
+}
+
+.jha-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #0066cc;
+}
+
+.jha-subtitle {
+  margin: 0.5rem 0 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Sections */
+.jha-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.jha-section h2 {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  color: #333;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #0066cc;
+}
+
+.jha-section-description {
+  margin: -0.5rem 0 1rem;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+/* Form Grid */
+.jha-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.jha-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.jha-field-full {
+  grid-column: 1 / -1;
+}
+
+.jha-field label {
+  margin-bottom: 0.35rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #444;
+}
+
+.jha-field input,
+.jha-field textarea {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.jha-field input:focus,
+.jha-field textarea:focus {
+  outline: none;
+  border-color: #0066cc;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.jha-field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Hazard Table */
+.jha-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  background: white;
+}
+
+.jha-table th,
+.jha-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.jha-table th {
+  background: #e8e8e8;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.jha-table td input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 0.9rem;
+}
+
+.jha-table td input:focus {
+  outline: none;
+  border-color: #0066cc;
+}
+
+.jha-row-number {
+  text-align: center;
+  font-weight: 600;
+  color: #666;
+  background: #f0f0f0;
+}
+
+/* PPE Grid */
+.jha-ppe-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.jha-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.jha-checkbox:hover {
+  background: #f0f7ff;
+  border-color: #0066cc;
+}
+
+.jha-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.jha-checkbox span {
+  font-size: 0.9rem;
+}
+
+/* Signature Table */
+.jha-signature-table td input {
+  width: 100%;
+}
+
+.jha-signature-input {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 1.2rem !important;
+}
+
+/* Buttons */
+.jha-btn {
+  padding: 0.6rem 1.25rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.jha-btn:active {
+  transform: scale(0.98);
+}
+
+.jha-btn-primary {
+  background: #0066cc;
+  color: white;
+}
+
+.jha-btn-primary:hover {
+  background: #0052a3;
+}
+
+.jha-btn-secondary {
+  background: white;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.jha-btn-secondary:hover {
+  background: #f5f5f5;
+}
+
+.jha-btn-icon {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #999;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.jha-btn-icon:hover:not(:disabled) {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.jha-btn-icon:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Form Actions */
+.jha-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #ddd;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .jha-form {
+    padding: 1rem;
+  }
+
+  .jha-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .jha-ppe-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .jha-table {
+    font-size: 0.85rem;
+  }
+
+  .jha-table th,
+  .jha-table td {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .jha-ppe-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .jha-actions {
+    flex-direction: column;
+  }
+
+  .jha-actions .jha-btn {
+    width: 100%;
+  }
+}
+
+/* Print styles */
+@media print {
+  .jha-form {
+    padding: 0;
+  }
+
+  .jha-section {
+    break-inside: avoid;
+    border: 1px solid #000;
+  }
+
+  .jha-btn,
+  .jha-btn-icon {
+    display: none;
+  }
+
+  .jha-table td input,
+  .jha-field input,
+  .jha-field textarea {
+    border: none;
+    background: transparent;
+  }
+}
