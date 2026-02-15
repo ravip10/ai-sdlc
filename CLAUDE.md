@@ -36,13 +36,33 @@ Don't dump a wall of text. Keep it to 3-4 lines + the command suggestion.
 
 ## Execution Model
 
-Phase-based development following the GSD pattern:
+Phase-based development with the **Ralph Wiggum loop** for autonomous execution:
 
 ```
 /ai-sdlc:discuss-phase N   →  Shape implementation decisions  →  CONTEXT.md
-/ai-sdlc:plan-phase N      →  Research + XML task plans        →  RESEARCH.md, PLAN.md
-/ai-sdlc:execute-phase N   →  Parallel execution, fresh ctx    →  SUMMARY.md
-/ai-sdlc:verify-work N     →  UAT + debug routing              →  VERIFICATION.md
+/ai-sdlc:plan-phase N      →  Research + task plans + prompts →  PLAN.md, PROMPT_*.md
+                           ↓
+              EXIT Claude Code, run in terminal:
+              ./scripts/loop.sh build [phase-dir]
+                           ↓
+/ai-sdlc:verify-work N     →  UAT + debug routing              →  UAT.md
+                           ↓
+              ./scripts/loop.sh fix [phase-dir]
+```
+
+### The Ralph Loop
+
+Execution happens OUTSIDE Claude Code using `scripts/loop.sh`. This gives:
+- **Fresh context per iteration** — no context rot
+- **Autonomous operation** — auto-approves tool calls
+- **Persistent progress** — PLAN.md tracks completion on disk
+- **Git integration** — commits per task, pushes per iteration
+
+```bash
+./scripts/loop.sh build 01-core-feature    # Build mode
+./scripts/loop.sh plan 01-core-feature     # Analyze & update plan
+./scripts/loop.sh fix 01-core-feature      # Fix UAT failures
+./scripts/loop.sh build 01-core-feature 10 # Max 10 iterations
 ```
 
 ### Task Format (XML)
@@ -67,10 +87,10 @@ Every plan uses structured XML optimized for Claude:
 Key differences from raw GSD: every task links back to a `<spec>` — traceability from code to product decision.
 
 ### Execution Rules
-- Fresh context window per plan execution (never accumulate garbage)
+- Fresh context window per iteration (Ralph loop handles this)
 - Atomic git commits per task
-- State tracked in `.planning/STATE.md`
-- Commit message format: `type(phase-plan): description`
+- State tracked in `.planning/STATE.md` and PLAN.md
+- Commit message format: `type(phase-N): description`
 
 ## Spec Quality Bar
 
@@ -102,9 +122,9 @@ All commands are in `.claude/commands/ai-sdlc/`. Type `/ai-sdlc:` to see them.
 
 ### Execution (Engineer Territory)
 - `/ai-sdlc:discuss-phase` — Shape implementation decisions
-- `/ai-sdlc:plan-phase` — Research + XML task plans
-- `/ai-sdlc:execute-phase` — Parallel execution with fresh context
-- `/ai-sdlc:verify-work` — UAT + debug routing
+- `/ai-sdlc:plan-phase` — Research + task plans + generate Ralph prompts
+- `/ai-sdlc:execute-phase` — Print instructions for Ralph loop
+- `/ai-sdlc:verify-work` — UAT + route fixes to Ralph loop
 - `/ai-sdlc:quick` — Ad-hoc task with SDLC guarantees
 
 ### Navigation
