@@ -136,6 +136,11 @@ project/
 
 This repo is the output target for PMCoach. PMCoach coaches PMs through spec creation and writes directly to `specs/`. You don't need PMCoach to use this repo — specs can be created manually or via `/ai-sdlc:spec-draft`. PMCoach just makes it faster and higher quality.
 
+## Examples
+
+See `examples/` for complete worked examples of the framework in action:
+- **jha-safety-forms/** — Mobile safety compliance forms for construction (shows specs, domain rules, planning, and implementation)
+
 ## Credits
 
 Built on patterns from:

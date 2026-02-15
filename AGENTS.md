@@ -1,23 +1,23 @@
 # AGENTS.md — Project Map
 
-> Auto-generated. Last updated: 2025-02-11
+> Auto-generated. Run `/ai-sdlc:generate-agents` to rebuild.
 
 ## Project
-**JHA Safety Forms** — Mobile-first digital JHA forms for construction field workers.
+**Not yet initialized** — Run `/ai-sdlc:init` to get started.
 
 ## Status
-- **Phase:** 1 (Core Mobile Form)
-- **State:** Spec approved, ready to build
+- **Phase:** —
+- **State:** Awaiting initialization
 
 ## Territories
 
 ### Product (PM)
 | File | Status | Description |
 |------|--------|-------------|
-| PROJECT.md | ✅ complete | Vision and hypothesis |
-| REQUIREMENTS.md | ✅ complete | v1/v2 scope |
-| ROADMAP.md | ✅ complete | 5 phases defined |
-| specs/domain/jha-compliance.md | ✅ complete | JHA/OSHA rules |
+| PROJECT.md | ⬜ template | Vision and hypothesis |
+| REQUIREMENTS.md | ⬜ template | Scope definition |
+| ROADMAP.md | ⬜ template | Phase breakdown |
+| specs/domain/ | ⬜ empty | Business rules |
 
 ### Design (Designer)
 | File | Status | Description |
@@ -29,27 +29,28 @@
 ### Engineering (Engineer)
 | File | Status | Description |
 |------|--------|-------------|
-| STACK.md | ✅ complete | Next.js 14, TypeScript, Tailwind, shadcn/ui |
+| STACK.md | ⬜ template | Tech stack |
 | ARCHITECTURE.md | ⬜ missing | System design |
 | CONVENTIONS.md | ⬜ missing | Code patterns |
 
 ## Specs
 
 ### Jobs (JTBD)
-| Spec | Status | Description |
-|------|--------|-------------|
-| 01-field-worker-completes-jha.md | ✅ approved | Field worker fills JHA on mobile before work starts |
+_No specs yet. Run `/ai-sdlc:spec-draft` to create one._
 
 ### Domain
-| Spec | Status |
-|------|--------|
-| jha-compliance.md | ✅ complete |
+_No domain rules captured. Run `/ai-sdlc:domain-capture` to extract business rules._
 
 ## Commands
 | Command | Purpose |
 |---------|---------|
-| `/ai-sdlc:spec-draft` | Create a JTBD spec for a feature |
+| `/ai-sdlc:init` | Bootstrap new project |
+| `/ai-sdlc:spec-draft` | Create a JTBD spec |
+| `/ai-sdlc:domain-capture` | Extract business rules |
 | `/ai-sdlc:discuss-phase N` | Shape implementation decisions |
 | `/ai-sdlc:plan-phase N` | Create task plans |
 | `/ai-sdlc:execute-phase N` | Run plans |
 | `/ai-sdlc:progress` | See current status |
+
+## Examples
+See `examples/jha-safety-forms/` for a complete worked example of this framework in action.

@@ -1,26 +1,13 @@
 # Roadmap
 
-## Phase 1: Core Mobile Form — Field workers can fill out a JHA on their phone
+## Phase 1: [Name] — [One-line description]
 - Status: not started
-- Requirements: Mobile form, job info, hazard table, PPE checklist, signatures
-- Estimated complexity: medium
+- Requirements: [Which requirements from REQUIREMENTS.md]
+- Estimated complexity: low | medium | high
 
-## Phase 2: Offline Support — Forms work without connectivity
+## Phase 2: [Name] — [One-line description]
 - Status: not started
-- Requirements: Offline queue, sync when online
-- Estimated complexity: medium
+- Requirements: [Which requirements]
+- Estimated complexity: low | medium | high
 
-## Phase 3: Form Submission — Persist completed forms
-- Status: not started
-- Requirements: Backend API, form storage, basic retrieval
-- Estimated complexity: medium
-
-## Phase 4: Admin Form Builder — GC admins create custom JHA templates
-- Status: not started
-- Requirements: Drag-and-drop builder, conditional logic, custom fields
-- Estimated complexity: high
-
-## Phase 5: Dashboard & Export — Review and export submissions
-- Status: not started
-- Requirements: Submission list, PDF export, basic analytics
-- Estimated complexity: medium
+<!-- Add more phases as needed -->

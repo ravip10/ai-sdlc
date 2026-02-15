@@ -1,25 +1,24 @@
 # Stack
 
 ## Framework
-- **Next.js 14** with App Router
-- **TypeScript** (strict mode)
+- **[Framework]** (e.g., Next.js 14, Rails 7, FastAPI)
+- **[Language]** (e.g., TypeScript strict, Python 3.11, Ruby 3.2)
 
 ## Styling
-- **Tailwind CSS** for utility-first styling
-- **shadcn/ui** for component primitives
-- **Lucide React** for icons
+- **[CSS approach]** (e.g., Tailwind, CSS Modules, styled-components)
+- **[Component library]** (e.g., shadcn/ui, Radix, MUI)
 
 ## State Management
-- **React Context + useReducer** for form state
-- No external state library needed for v1
+- **[Approach]** (e.g., React Context, Redux, Zustand)
 
 ## Libraries
-- **@dnd-kit/core + @dnd-kit/sortable** for drag-and-drop (Phase 4)
+- [Key library 1]
+- [Key library 2]
 
 ## Deployment
-- **Vercel** with auto-deploy
-- Domain: fieldlibrary.pmlabs.dev
+- **[Platform]** (e.g., Vercel, Railway, AWS)
+- Domain: [your-domain.com]
 
-## Backend (TBD)
-- API routes in Next.js for v1
-- Database choice deferred (likely Postgres or Supabase)
+## Backend
+- [Database choice]
+- [API approach]

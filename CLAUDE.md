@@ -128,6 +128,14 @@ Located in `.claude/agents/`. These are system-spawned workers, never called by 
 | designer-reviewer | UX/UI validation | spec-review |
 | skeptic | Devil's advocate | spec-review |
 
+## Examples
+
+The `examples/` directory contains complete worked examples:
+
+- **jha-safety-forms/** — Mobile safety compliance forms for construction. Shows specs, domain rules, planning decisions, and React implementation.
+
+Reference these when learning the framework or to see how specs connect to code.
+
 ## PMCoach Compatibility
 
 This repo is designed as the output target for PMCoach. The flow:

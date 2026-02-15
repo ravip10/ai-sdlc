@@ -1,17 +1,17 @@
-# JHA Safety Forms
+# [Project Name]
 
 ## Problem
-Paper JHA forms suck — they get lost, are illegible, aren't searchable, and slow down compliance review. Field workers waste time dealing with paper when they should be focused on the job.
+[What pain point are you solving? Be specific about who suffers and how.]
 
 ## Hypothesis
-If we build a mobile-first digital JHA form, then compliance completion rates will increase because field workers can fill them out on-site in 2 minutes instead of dealing with paper.
+If we build [solution], then [outcome] because [reason].
 
 ## Audience
-**Primary (v1):** Field workers on construction sites who need to complete JHA forms before starting work. They're on mobile devices, often in variable conditions (sun glare, gloves), and want to get through safety paperwork fast.
+**Primary (v1):** [Who is this for? What context are they in? What constraints do they have?]
 
-**Secondary (v2+):** GC admins who create and manage JHA form templates, review submissions, and ensure compliance across job sites.
+**Secondary (v2+):** [Who else might use this later?]
 
 ## Success Criteria
-- Field workers complete JHA forms in under 2 minutes on mobile
-- 100% of required fields captured digitally (no paper fallback needed)
-- Forms are searchable and auditable by GC admins
+- [Measurable outcome 1]
+- [Measurable outcome 2]
+- [Measurable outcome 3]

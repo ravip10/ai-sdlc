@@ -16,7 +16,7 @@ Before starting, read:
 **Phase 1: Trigger Discovery**
 Ask: "What situation triggers this need? Paint me a specific scenario — who is doing what when they hit this problem?"
 
-Listen for: vague triggers ("user wants to...") vs. specific ones ("when a field supervisor arrives at a job site and needs to document hazards before work begins"). Push for specificity.
+Listen for: vague triggers ("user wants to...") vs. specific ones ("when a customer receives a shipping notification and wants to track their package"). Push for specificity.
 
 **Phase 2: Motivation Unpacking**
 Ask: "What are they trying to accomplish? Not the feature — the outcome they care about."
@@ -26,7 +26,7 @@ Challenge: If they describe a solution ("they want a button that..."), redirect 
 **Phase 3: Outcome Definition**
 Ask: "How do they know they've succeeded? What does 'done' look like from their perspective?"
 
-Push for measurable: "They feel safe" → "They have a signed-off JHA before work begins."
+Push for measurable: "They feel confident" → "They see real-time location updates with estimated arrival time."
 
 **Phase 4: Edge Cases & Failures**
 Ask these in sequence:
