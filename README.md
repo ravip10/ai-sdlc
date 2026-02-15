@@ -67,6 +67,8 @@ claude
 | `/ai-sdlc:spec-draft` | PM | Coach through JTBD spec creation |
 | `/ai-sdlc:domain-capture` | PM | Extract business rules from conversation |
 | `/ai-sdlc:spec-review` | PM | Multi-agent review (engineer, designer, skeptic) |
+| `/ai-sdlc:design-phase N` | Design | Generate components, flows, prototype specs |
+| `/ai-sdlc:prototype` | Design | Create interactive HTML/React prototype |
 | `/ai-sdlc:discuss-phase N` | Build | Shape implementation decisions |
 | `/ai-sdlc:plan-phase N` | Build | Research + task plans + Ralph prompts |
 | `/ai-sdlc:execute-phase N` | Build | Print instructions for Ralph loop |
@@ -131,7 +133,7 @@ project/
 | REQUIREMENTS.md | PM | After discovery |
 | specs/jobs/*.md | PM (or PMCoach) | Before each feature |
 | specs/domain/*.md | PM (or PMCoach) | When domain rules surface |
-| design/*.md | Designer | After specs, before build |
+| design/*.md | Designer (AI-assisted) | After specs, via /ai-sdlc:design-phase |
 | STACK.md | Engineer | Project kickoff |
 | ARCHITECTURE.md | Engineer | After specs review |
 | CONVENTIONS.md | Engineer | Project kickoff |

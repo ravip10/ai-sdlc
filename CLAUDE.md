@@ -39,6 +39,7 @@ Don't dump a wall of text. Keep it to 3-4 lines + the command suggestion.
 Phase-based development with the **Ralph Wiggum loop** for autonomous execution:
 
 ```
+/ai-sdlc:design-phase N    →  Components, flows, prototypes   →  design/
 /ai-sdlc:discuss-phase N   →  Shape implementation decisions  →  CONTEXT.md
 /ai-sdlc:plan-phase N      →  Research + task plans + prompts →  PLAN.md, PROMPT_*.md
                            ↓
@@ -119,6 +120,10 @@ All commands are in `.claude/commands/ai-sdlc/`. Type `/ai-sdlc:` to see them.
 - `/ai-sdlc:spec-draft` — Coach through JTBD spec creation
 - `/ai-sdlc:domain-capture` — Extract business rules from conversation
 - `/ai-sdlc:spec-review` — Multi-agent spec review panel
+
+### Design (Designer Territory)
+- `/ai-sdlc:design-phase` — Generate components, flows, prototype specs
+- `/ai-sdlc:prototype` — Create interactive HTML/React prototype
 
 ### Execution (Engineer Territory)
 - `/ai-sdlc:discuss-phase` — Shape implementation decisions
