@@ -237,34 +237,34 @@ See `examples/` for complete worked examples of the framework in action:
 
 ### Commands → Agents
 
-| Command | Agents Used | Output |
-|---------|-------------|--------|
-| `/ai-sdlc:init` | — (interactive) | PROJECT.md, REQUIREMENTS.md, ROADMAP.md, STACK.md |
-| `/ai-sdlc:spec-draft` | — (interactive) | specs/jobs/*.md |
-| `/ai-sdlc:domain-capture` | — (interactive) | specs/domain/*.md |
-| `/ai-sdlc:spec-review` | designer-reviewer + engineer-reviewer + skeptic (parallel) | Review feedback |
-| `/ai-sdlc:design-phase` | — (interactive) | design/*.md |
-| `/ai-sdlc:discuss-phase` | — (interactive) | .planning/phases/[N]/CONTEXT.md |
-| `/ai-sdlc:plan-phase` | researcher → planner → plan-checker (sequential) | PLAN.md + PROMPT files |
-| `/ai-sdlc:execute-phase` | executor (Path A) OR prints Ralph instructions (Path B) | Code + PLAN.md updated |
-| `/ai-sdlc:verify-work` | verifier | UAT.md |
-| `/ai-sdlc:quick` | — (inline) | Code + commit |
-| `/ai-sdlc:progress` | — (reads state) | Status report |
-| `/ai-sdlc:map-codebase` | researcher | Codebase analysis |
-| `/ai-sdlc:generate-agents` | — | Rebuilds AGENTS.md |
+| Command | Agents Used | Reads | Output |
+|---------|-------------|-------|--------|
+| `/ai-sdlc:init` | — (interactive) | — | PROJECT.md, REQUIREMENTS.md, ROADMAP.md, STACK.md |
+| `/ai-sdlc:spec-draft` | — (interactive) | PROJECT.md, REQUIREMENTS.md, specs/domain/ | specs/jobs/*.md |
+| `/ai-sdlc:domain-capture` | — (interactive) | PROJECT.md | specs/domain/*.md |
+| `/ai-sdlc:spec-review` | designer-reviewer + engineer-reviewer + skeptic | specs/jobs/, specs/domain/ | Review feedback |
+| `/ai-sdlc:design-phase` | — (interactive) | PROJECT.md, ROADMAP.md, STACK.md, specs/ | design/*.md |
+| `/ai-sdlc:discuss-phase` | — (interactive) | ROADMAP.md, specs/jobs/, specs/domain/ | CONTEXT.md |
+| `/ai-sdlc:plan-phase` | researcher → planner → plan-checker | STACK.md, CONVENTIONS.md, CONTEXT.md, specs/ | PLAN.md, PROMPT_*.md |
+| `/ai-sdlc:execute-phase` | executor (Path A) or — (Path B) | PLAN.md, STACK.md, CONVENTIONS.md | Code, PLAN.md updated |
+| `/ai-sdlc:verify-work` | verifier | PLAN.md, specs/jobs/, CONTEXT.md | UAT.md |
+| `/ai-sdlc:quick` | — (inline) | STACK.md, CONVENTIONS.md | Code + commit |
+| `/ai-sdlc:progress` | — (reads state) | ROADMAP.md, STATE.md, AGENTS.md | Status report |
+| `/ai-sdlc:map-codebase` | researcher | (existing codebase) | STACK.md, ARCHITECTURE.md, CONVENTIONS.md |
+| `/ai-sdlc:generate-agents` | — | PROJECT.md, REQUIREMENTS.md, ROADMAP.md, STACK.md, specs/ | AGENTS.md |
 
 ### Agents → Purpose
 
-| Agent | Called By | Purpose |
-|-------|-----------|---------|
-| researcher | plan-phase, map-codebase | Explore codebase, gather technical context |
-| planner | plan-phase | Generate PLAN.md as markdown checklist |
-| plan-checker | plan-phase | Validate PLAN.md completeness and ordering |
-| executor | execute-phase (Path A only) | Work through PLAN.md tasks inside Claude Code |
-| designer-reviewer | spec-review | Review specs for UX/design gaps |
-| engineer-reviewer | spec-review | Review specs for technical feasibility |
-| skeptic | spec-review | Challenge assumptions, find edge cases |
-| verifier | verify-work | UAT, check work against specs |
+| Agent | Called By | Reads | Purpose |
+|-------|-----------|-------|---------|
+| researcher | plan-phase, map-codebase | STACK.md, specs/, codebase | Explore codebase, gather technical context |
+| planner | plan-phase | CONTEXT.md, RESEARCH.md, specs/, CONVENTIONS.md | Generate PLAN.md as markdown checklist |
+| plan-checker | plan-phase | PLAN.md, specs/, CONTEXT.md, ROADMAP.md | Validate PLAN.md completeness and ordering |
+| executor | execute-phase (Path A) | PLAN.md, STACK.md, CONVENTIONS.md, specs/ | Work through tasks inside Claude Code |
+| designer-reviewer | spec-review | specs/jobs/, design/ | Review specs for UX/design gaps |
+| engineer-reviewer | spec-review | specs/jobs/, STACK.md | Review specs for technical feasibility |
+| skeptic | spec-review | specs/jobs/, specs/domain/ | Challenge assumptions, find edge cases |
+| verifier | verify-work | PLAN.md, specs/, code output | UAT, check work against specs |
 
 ## Credits
 
