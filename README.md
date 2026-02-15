@@ -140,6 +140,29 @@ project/
 | .planning/* | System (AI) | During execution |
 | AGENTS.md | System (auto) | Regenerated on changes |
 
+## AGENTS.md
+
+AGENTS.md is **compressed passive context** loaded into every Claude Code session. It's not a status dashboard — status tracking belongs in `.planning/STATE.md`.
+
+**What it contains (~60 lines, <10KB):**
+- Stack summary (3-5 lines from STACK.md)
+- Architecture summary (3-5 lines from ARCHITECTURE.md)
+- Conventions summary (3-5 lines from CONVENTIONS.md)
+- Commands (dev/build/test/lint from package.json)
+- Domain index (one-line summary per spec — the core of AGENTS.md)
+- Operational notes (user-added, preserved across regeneration)
+
+**Regenerate with:** `/ai-sdlc:generate-agents`
+
+The domain index gives Claude quick orientation without reading every spec file:
+
+```markdown
+| Spec | Covers |
+|------|--------|
+| specs/jobs/01-user-submits-form.md | Mobile form submission with offline support |
+| specs/domain/validation-rules.md | Field validation, required fields, error messages |
+```
+
 ## How Building Works
 
 Planning always happens inside Claude Code with human guidance:
