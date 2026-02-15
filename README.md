@@ -71,8 +71,8 @@ claude
 | `/ai-sdlc:prototype` | Design | Create interactive HTML/React prototype |
 | `/ai-sdlc:discuss-phase N` | Build | Shape implementation decisions |
 | `/ai-sdlc:plan-phase N` | Build | Research + task plans + Ralph prompts |
-| `/ai-sdlc:execute-phase N` | Build | Print instructions for Ralph loop |
-| `/ai-sdlc:verify-work N` | Build | UAT + route fixes to Ralph loop |
+| `/ai-sdlc:execute-phase N` | Build | Run tasks (interactive or Ralph loop) |
+| `/ai-sdlc:verify-work N` | Build | UAT + route fixes |
 | `/ai-sdlc:quick` | Build | Ad-hoc task with SDLC guarantees |
 | `/ai-sdlc:progress` | Nav | Where am I? What's next? |
 | `/ai-sdlc:map-codebase` | Nav | Analyze existing codebase |
@@ -107,7 +107,7 @@ project/
 │       └── 01-phase-name/
 │           ├── CONTEXT.md       # Implementation decisions (from discuss-phase)
 │           ├── RESEARCH.md      # Technical research (from plan-phase)
-│           ├── PLAN.md          # XML task plans (from plan-phase)
+│           ├── PLAN.md          # Task checklist (from plan-phase)
 │           ├── PROMPT_build.md  # Ralph build prompt (from plan-phase)
 │           ├── PROMPT_plan.md   # Ralph planning prompt
 │           ├── PROMPT_fix.md    # Ralph fix prompt
@@ -140,26 +140,89 @@ project/
 | .planning/* | System (AI) | During execution |
 | AGENTS.md | System (auto) | Regenerated on changes |
 
-## The Ralph Loop
+## How Building Works
 
-Execution uses the **Ralph Wiggum technique** — an autonomous loop that runs OUTSIDE Claude Code in a regular terminal. This gives fresh context per iteration, preventing the quality degradation that happens as context windows fill up.
+Planning always happens inside Claude Code with human guidance:
 
-```bash
-# After /ai-sdlc:plan-phase generates PROMPT_*.md files:
-
-./scripts/loop.sh build 01-core-feature    # Build tasks one by one
-./scripts/loop.sh plan 01-core-feature     # Analyze & update plan
-./scripts/loop.sh fix 01-core-feature      # Fix UAT failures
-./scripts/loop.sh build 01-core-feature 10 # Max 10 iterations
+```
+/ai-sdlc:plan-phase N
+    ↓
+researcher agent → planner agent → plan-checker agent
+    ↓
+PLAN.md (task checklist)
 ```
 
-The loop:
-1. Pipes `PROMPT_{mode}.md` to `claude -p --dangerously-skip-permissions`
-2. Claude reads PLAN.md, implements the next task, commits
-3. Loop pushes to git and restarts with fresh context
-4. Repeats until all tasks complete or you hit Ctrl+C
+Building has **two paths** from the same PLAN.md:
 
-This trades interactive control for autonomous execution. Run it in a Docker container or sandboxed environment.
+```
+                    PLAN.md
+                       │
+        ┌──────────────┴──────────────┐
+        │                             │
+        ▼                             ▼
+   PATH A                        PATH B
+   Interactive                   Ralph Loop
+   (inside Claude Code)          (outside Claude Code)
+        │                             │
+        ▼                             ▼
+   /ai-sdlc:execute-phase N      ./scripts/loop.sh build
+   executor agent                fresh context per task
+   human reviews each task       fully autonomous
+        │                             │
+        └──────────────┬──────────────┘
+                       │
+                       ▼
+              PLAN.md updated
+              - [ ] → - [x]
+                       │
+                       ▼
+              /ai-sdlc:verify-work N
+```
+
+### Path A — Interactive (inside Claude Code)
+
+```bash
+claude
+/ai-sdlc:execute-phase 1
+```
+
+- Executor agent works through tasks one by one
+- You review, provide feedback, adjust
+- Good for: complex work, learning codebase, nuanced decisions
+
+### Path B — Ralph Loop (outside Claude Code)
+
+```bash
+exit  # leave Claude Code
+./scripts/loop.sh build 01-core-feature
+```
+
+- Fresh Claude context per task (no context rot)
+- Fully autonomous, auto-approves tool calls
+- Good for: well-specified phases, overnight runs, batch execution
+
+### Task Format
+
+Both paths use markdown checklists in PLAN.md:
+
+```markdown
+- [ ] **Create user profile component**
+  - Files: `src/components/UserProfile.tsx`
+  - Spec: `specs/jobs/01-user-views-profile.md`
+  - Action: Create Card with avatar, name, email using shadcn components
+  - Verify: `pnpm build` passes, component renders correctly
+  - Done: Profile displays user info with proper styling
+
+- [x] **Set up database schema**
+  - Files: `prisma/schema.prisma`
+  - ...
+```
+
+| Status | Meaning |
+|--------|---------|
+| `- [ ]` | Pending |
+| `- [x]` | Completed |
+| `- [!]` | Blocked |
 
 ## PMCoach Integration
 
@@ -174,6 +237,6 @@ See `examples/` for complete worked examples of the framework in action:
 
 Built on patterns from:
 - **[Ralph Wiggum](https://github.com/ghuntley/how-to-ralph-wiggum)** — Autonomous loop execution with fresh context per iteration
-- **GSD** (TÂCHES) — Phase execution, XML tasks, multi-agent orchestration
+- **GSD** (TÂCHES) — Phase execution, multi-agent orchestration
 - **PM-OS** — Skills architecture, sub-agent reviewers, context management
 - **AI-SDLC Framework** — Role separation, AGENTS.md, domain persistence

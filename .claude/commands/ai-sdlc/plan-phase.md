@@ -56,36 +56,34 @@ Planner creates task plans. Each plan should be:
 
 Output: `.planning/phases/[N]-*/PLAN.md`
 
-Plan format:
-```xml
-<plan id="[N]-[M]" phase="[N]" title="[Plan Title]">
-  <context>
-    Read: [list of files this plan needs]
-    Prior: [what previous plans in this phase produced]
-  </context>
+Plan format (markdown checklist):
 
-  <task type="auto">
-    <n>Task description</n>
-    <files>path/to/files</files>
-    <spec>specs/jobs/NN-name.md</spec>
-    <action>
-      Precise implementation instructions.
-      Reference conventions from CONVENTIONS.md.
-      Reference design from design/ if UI work.
-    </action>
-    <verify>How to check it works</verify>
-    <done>What success looks like</done>
-  </task>
+```markdown
+# Plan: Phase [N] — [Plan Title]
 
-  <task type="auto">
-    ...
-  </task>
+## Context
+- **Read:** [list of files this plan needs]
+- **Prior:** [what previous plans in this phase produced]
 
-  <must_haves>
-    - [Derived from spec success criteria]
-    - [Derived from CONTEXT.md decisions]
-  </must_haves>
-</plan>
+## Tasks
+
+- [ ] **Task name**
+  - Files: `path/to/files`
+  - Spec: `specs/jobs/NN-name.md`
+  - Action: Precise implementation instructions. Reference conventions from CONVENTIONS.md. Reference design from design/ if UI work. Always use shadcn/ui components.
+  - Verify: `pnpm build && pnpm test` or specific behavior to check
+  - Done: What success looks like
+
+- [ ] **Second task**
+  - Files: `src/components/Feature.tsx`
+  - Spec: `specs/jobs/NN-name.md`
+  - Action: Implementation details
+  - Verify: Command or observable behavior
+  - Done: Measurable outcome
+
+## Must Haves
+- [ ] [Derived from spec success criteria]
+- [ ] [Derived from CONTEXT.md decisions]
 ```
 
 ### Step 3: Verify Plan
@@ -110,7 +108,7 @@ Create three prompt files in the phase directory for the Ralph loop:
 ```markdown
 # Ralph Planning Mode — Phase [N]: [Phase Name]
 
-You are Ralph, an autonomous planning assistant. Your job is to analyze the codebase and create/update the implementation plan.
+You are Ralph, an autonomous planning assistant. Your job is to analyze the codebase and update the task plan.
 
 ## Phase 0: Orient
 
@@ -126,8 +124,8 @@ Study these files to understand the project:
 1. Compare PLAN.md tasks against existing code
 2. Search for TODOs, stubs, minimal implementations, placeholders
 3. Check which tasks are already complete (files exist and work)
-4. Update PLAN.md with current status:
-   - Mark completed tasks with `status="done"`
+4. Update PLAN.md:
+   - Change `- [ ]` to `- [x]` for completed tasks
    - Add any missing tasks discovered during analysis
    - Reprioritize if needed
 
@@ -137,7 +135,7 @@ Do NOT implement anything. Only analyze and update the plan.
 
 - Do NOT assume functionality is missing; confirm with code search first
 - If a file exists, check if it's complete or just a stub
-- Update PLAN.md task statuses accurately
+- Update task checkboxes accurately
 - When done, commit: `git add -A && git commit -m "chore(phase-[N]): update plan status"`
 
 Start by reading AGENTS.md, then PLAN.md, then search the codebase.
@@ -162,17 +160,17 @@ Study these files:
 
 ## Instructions
 
-1. Read PLAN.md to see all tasks
-2. Find the NEXT task without `status="done"`
-3. Check if it's actually incomplete (search for existing implementation)
-4. If incomplete, implement it following:
-   - The `<action>` instructions
+1. Read PLAN.md and find the next `- [ ]` task
+2. Check if it's actually incomplete (search for existing implementation)
+3. If incomplete, implement it following:
+   - The `Action:` instructions
    - CONVENTIONS.md patterns
    - STACK.md constraints
-5. Run the `<verify>` check
-6. If verify passes:
-   - Commit: `git add -A && git commit -m "feat(phase-[N]): [task description]"`
-   - Mark task as `status="done"` in PLAN.md
+   - Always use shadcn/ui for UI components
+4. Run the `Verify:` check
+5. If verify passes:
+   - Change `- [ ]` to `- [x]` in PLAN.md
+   - Commit: `git add -A && git commit -m "feat(phase-[N]): [task name]"`
    - Update IMPLEMENTATION.md with what you built
 
 ## Maintaining IMPLEMENTATION.md
@@ -202,7 +200,7 @@ After each completed task, update `.planning/phases/[N]-[name]/IMPLEMENTATION.md
 
 ## When All Tasks Complete
 
-When ALL tasks in PLAN.md have `status="done"`:
+When no `- [ ]` tasks remain in PLAN.md:
 
 1. Run build and tests to verify everything works
 2. Generate `.planning/phases/[N]-[name]/SUMMARY.md`:
@@ -218,7 +216,6 @@ When ALL tasks in PLAN.md have `status="done"`:
 
 ## Key Decisions
 - [Decision 1 and why]
-- [Decision 2 and why]
 
 ## Files Changed
 [List all files created or modified]
@@ -239,12 +236,9 @@ Run `/ai-sdlc:verify-work [N]` to begin manual testing.
 99998. Do NOT assume not implemented — always search first.
 99997. One task per iteration. Complete it fully before the loop restarts.
 99996. Keep IMPLEMENTATION.md up to date — it's the source of truth for what happened.
+99995. Always use shadcn/ui components for any UI work.
 
-## Coding Standards
-
-[Insert relevant CONVENTIONS.md content here]
-
-Start now. Read PLAN.md, find the next task, implement it.
+Start now. Read PLAN.md, find the next `- [ ]` task, implement it.
 ```
 
 #### `.planning/phases/[N]-*/PROMPT_fix.md`
@@ -259,13 +253,12 @@ You are Ralph, an autonomous debugging assistant. Your job is to fix issues foun
 Study these files:
 1. Read `AGENTS.md` — project structure
 2. Read `.planning/phases/[N]-[name]/UAT.md` — test results with failures
-3. Read `.planning/phases/[N]-[name]/VERIFICATION.md` — automated checks
-4. Read `.planning/phases/[N]-[name]/PLAN.md` — what was supposed to be built
-5. Read `specs/jobs/` — expected behavior
+3. Read `.planning/phases/[N]-[name]/PLAN.md` — what was supposed to be built
+4. Read `specs/jobs/` — expected behavior
 
 ## Instructions
 
-1. Read UAT.md to find failed tests
+1. Read UAT.md to find issues marked with ❌
 2. For each failure:
    - Understand what should happen (from specs)
    - Find the relevant code
@@ -273,7 +266,7 @@ Study these files:
    - Fix the root cause (not just the symptom)
    - Test the fix
 3. Commit each fix: `git add -A && git commit -m "fix(phase-[N]): [what was fixed]"`
-4. Update UAT.md to mark the issue as resolved
+4. Update UAT.md to mark the issue as resolved (change ❌ to ✅)
 
 ## Critical Rules
 
@@ -290,14 +283,15 @@ Study these files:
 - Event handlers not wired up
 - Missing error handling
 - Async issues (promises not awaited)
+- shadcn component misconfiguration
 
-Start by reading UAT.md to find the first unresolved issue.
+Start by reading UAT.md to find the first ❌ issue.
 ```
 
 ### Step 5: Present Plan
 
 Show the user:
-- Number of plans and tasks
+- Number of tasks
 - Estimated complexity
 - Key decisions the planner made
 - Any assumptions
@@ -314,14 +308,20 @@ Update `.planning/STATE.md`:
 
 Print:
 ```
-Plan complete. Prompt files generated:
+Plan complete. Files generated:
+- .planning/phases/[N]-[name]/PLAN.md (task checklist)
 - .planning/phases/[N]-[name]/PROMPT_plan.md
 - .planning/phases/[N]-[name]/PROMPT_build.md
 - .planning/phases/[N]-[name]/PROMPT_fix.md
 
-To execute, EXIT Claude Code and run in a regular terminal:
+Two ways to execute:
+
+PATH A — Inside Claude Code (interactive):
+  /ai-sdlc:execute-phase [N]
+
+PATH B — Outside Claude Code (autonomous):
+  Exit Claude Code, then run:
   ./scripts/loop.sh build [N]-[name]
 
-The Ralph loop runs with fresh context per iteration.
-Use Ctrl+C to stop at any time.
+Both paths work from the same PLAN.md.
 ```

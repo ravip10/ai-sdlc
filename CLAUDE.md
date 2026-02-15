@@ -37,62 +37,57 @@ Don't dump a wall of text. Keep it to 3-4 lines + the command suggestion.
 
 ## Execution Model
 
-Phase-based development with the **Ralph Wiggum loop** for autonomous execution:
+Phase-based development with two build paths:
 
 ```
 /ai-sdlc:design-phase N    →  Components, flows, prototypes   →  design/
 /ai-sdlc:discuss-phase N   →  Shape implementation decisions  →  CONTEXT.md
-/ai-sdlc:plan-phase N      →  Research + task plans + prompts →  PLAN.md, PROMPT_*.md
+/ai-sdlc:plan-phase N      →  Research + task plans           →  PLAN.md
                            ↓
-              EXIT Claude Code, run in terminal:
-              ./scripts/loop.sh build [phase-dir]
+              /ai-sdlc:execute-phase N  (Path A: interactive)
+                        OR
+              ./scripts/loop.sh build   (Path B: autonomous)
                            ↓
 /ai-sdlc:verify-work N     →  UAT + debug routing              →  UAT.md
-                           ↓
-              ./scripts/loop.sh fix [phase-dir]
 ```
 
-### The Ralph Loop
+### Two Build Paths
 
-Execution happens OUTSIDE Claude Code using `scripts/loop.sh`. This gives:
-- **Fresh context per iteration** — no context rot
-- **Autonomous operation** — auto-approves tool calls
-- **Persistent progress** — PLAN.md tracks completion on disk
-- **Git integration** — commits per task, pushes per iteration
+Both paths read and update the same PLAN.md, marking tasks `- [ ]` → `- [x]`.
 
-```bash
-./scripts/loop.sh build 01-core-feature    # Build mode
-./scripts/loop.sh plan 01-core-feature     # Analyze & update plan
-./scripts/loop.sh fix 01-core-feature      # Fix UAT failures
-./scripts/loop.sh build 01-core-feature 10 # Max 10 iterations
+**Path A — Interactive (inside Claude Code):**
+- `/ai-sdlc:execute-phase N` spawns executor agent
+- Human reviews each task, provides feedback
+- Good for: complex work, learning codebase, nuanced decisions
+
+**Path B — Ralph Loop (outside Claude Code):**
+- Exit Claude Code, run `./scripts/loop.sh build [phase-dir]`
+- Fresh context per task, fully autonomous
+- Good for: well-specified phases, overnight runs, batch execution
+
+### Task Format (Markdown Checklist)
+
+PLAN.md uses markdown checklists:
+
+```markdown
+- [ ] **Create voice recorder component**
+  - Files: `src/components/VoiceRecorder.tsx`
+  - Spec: `specs/jobs/01-worker-records-voice.md`
+  - Action: Use MediaRecorder API with error handling for denied permissions. Use shadcn Card for container. Match design spec in design/prototype/voice-capture.md.
+  - Verify: `pnpm build` passes, component records 5s audio
+  - Done: Voice recording works on Chrome and Safari mobile
 ```
 
-### Task Format (XML)
-
-Every plan uses structured XML optimized for Claude:
-
-```xml
-<task type="auto">
-  <name>Create voice recorder component</name>
-  <files>src/components/VoiceRecorder.tsx</files>
-  <spec>specs/jobs/01-worker-records-voice.md</spec>
-  <action>
-    Use MediaRecorder API with error handling for denied permissions.
-    Match design spec in design/prototype/voice-capture.md.
-    Server component wrapper, client island for recorder.
-  </action>
-  <verify>Component renders, records 5s audio, shows waveform</verify>
-  <done>Voice recording works on Chrome and Safari mobile</done>
-</task>
-```
-
-Key differences from raw GSD: every task links back to a `<spec>` — traceability from code to product decision.
+Task status:
+- `- [ ]` — pending
+- `- [x]` — completed
+- `- [!]` — blocked
 
 ### Execution Rules
-- Fresh context window per iteration (Ralph loop handles this)
 - Atomic git commits per task
 - State tracked in `.planning/STATE.md` and PLAN.md
 - Commit message format: `type(phase-N): description`
+- Always use shadcn/ui for UI components
 
 ## Spec Quality Bar
 

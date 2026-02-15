@@ -1,38 +1,60 @@
-## /ai-sdlc:execute-phase — Run Plans with Ralph Loop
+## /ai-sdlc:execute-phase — Run Tasks from PLAN.md
 
-Execution happens OUTSIDE Claude Code using the Ralph loop. This command prepares and instructs the user.
+Execute tasks interactively inside Claude Code, or get instructions for the autonomous Ralph loop.
 
 ### Usage
 ```
 /ai-sdlc:execute-phase [phase_number]
+/ai-sdlc:execute-phase [phase_number] --ralph
 ```
 
 ### Context Loading
 
 Read:
 1. `AGENTS.md` — project map
-2. `.planning/phases/[N]-*/PLAN.md` — verify plan exists
-3. `.planning/phases/[N]-*/PROMPT_build.md` — verify prompt exists
+2. `.planning/phases/[N]-*/PLAN.md` — the task checklist
+3. `.planning/phases/[N]-*/CONTEXT.md` — implementation decisions
 4. `.planning/STATE.md` — current progress
 
 ### Pre-flight Checks
 
 1. If PLAN.md doesn't exist → "Run `/ai-sdlc:plan-phase [N]` first."
-2. If PROMPT_build.md doesn't exist → "Run `/ai-sdlc:plan-phase [N]` to regenerate prompts."
-3. If STACK.md doesn't exist → "Run `/ai-sdlc:init` first."
+2. If STACK.md doesn't exist → "Run `/ai-sdlc:init` first."
 
-### Why External Execution?
+### Two Execution Paths
 
-The Ralph loop runs in a regular terminal, OUTSIDE Claude Code, because:
+Both paths work from the same PLAN.md. Tasks are marked `- [ ]` → `- [x]` as they complete.
 
-1. **Fresh context per iteration** — Each loop iteration starts with a clean context window. No accumulated garbage, no context rot.
-2. **Autonomous operation** — Uses `--dangerously-skip-permissions` to auto-approve tool calls. The loop runs unattended.
-3. **Persistent progress** — PLAN.md tracks task completion on disk. Each iteration reads it fresh and picks up where the last left off.
-4. **Git integration** — Commits happen per-task, pushes happen per-iteration. Progress is always saved.
+#### Path A — Interactive (default)
 
-### Instructions
+Use the executor agent inside Claude Code. Good for:
+- Complex work needing human judgment
+- Learning a new codebase
+- Tasks requiring back-and-forth discussion
 
-Print the following:
+**Flow:**
+1. Spawn executor agent (`.claude/agents/executor.md`)
+2. Feed it PLAN.md, STACK.md, CONVENTIONS.md
+3. Executor finds next `- [ ]` task, implements it
+4. You review, provide feedback if needed
+5. Executor commits and moves to next task
+6. Repeat until all tasks are `- [x]`
+
+**Commands during execution:**
+- "skip this task" → marks `- [!]` blocked, moves on
+- "pause" → stops execution, you can resume later
+- "show progress" → displays task completion status
+
+#### Path B — Ralph Loop (--ralph flag or standalone)
+
+Run autonomously outside Claude Code. Good for:
+- Well-specified phases with clear tasks
+- Overnight/batch execution
+- Maximizing throughput (fresh context per task)
+
+**To use Ralph:**
+
+Print these instructions:
 
 ```
 ═══════════════════════════════════════════════════════════════
@@ -40,8 +62,7 @@ Print the following:
 ═══════════════════════════════════════════════════════════════
 
 Phase [N]: [Phase Name]
-Tasks: [X] tasks in PLAN.md
-Prompt: .planning/phases/[N]-[name]/PROMPT_build.md
+Tasks: [X] tasks in PLAN.md ([Y] remaining)
 
 TO EXECUTE:
 
@@ -52,13 +73,13 @@ TO EXECUTE:
    ./scripts/loop.sh build [N]-[name]
 
 3. Ralph will:
-   - Read PLAN.md and find the next incomplete task
-   - Implement it fully (no stubs, no TODOs)
-   - Run verification checks
-   - Commit and push
+   - Read PLAN.md and find the next `- [ ]` task
+   - Implement it completely
+   - Mark `- [x]` and commit
+   - Push to git
    - Loop with fresh context until all tasks complete
 
-4. Monitor progress:
+4. Monitor:
    - Watch terminal output
    - Check git log for commits
    - Ctrl+C to stop at any time
@@ -69,24 +90,42 @@ TO EXECUTE:
 
 ═══════════════════════════════════════════════════════════════
 
-OPTIONAL FLAGS:
+OPTIONS:
 
   ./scripts/loop.sh build [N]-[name] 10    # Max 10 iterations
-  ./scripts/loop.sh plan [N]-[name]        # Planning mode (analyze, don't build)
+  ./scripts/loop.sh plan [N]-[name]        # Analyze only, don't build
 
 ═══════════════════════════════════════════════════════════════
 ```
 
+### Progress Tracking
+
+Both paths update the same files:
+- `PLAN.md` — `- [ ]` → `- [x]` for completed tasks
+- `IMPLEMENTATION.md` — log of what was built
+- `SUMMARY.md` — generated when all tasks complete
+
 ### Update State
 
 Update `.planning/STATE.md`:
-- Phase status → "executing"
+- Phase status → "executing" or "executing-ralph"
 - Log session with timestamp
 
-### Do NOT
+### When Complete
 
-- Do NOT try to execute tasks inside Claude Code
-- Do NOT spawn executor agents
-- Do NOT run the loop from within this conversation
+When all tasks in PLAN.md are `- [x]`:
 
-The whole point is fresh context per iteration, which requires exiting and re-entering.
+```
+═══════════════════════════════════════════════════════════════
+                 PHASE [N] EXECUTION COMPLETE
+═══════════════════════════════════════════════════════════════
+
+All [X] tasks completed.
+
+Files generated:
+- IMPLEMENTATION.md (what was built)
+- SUMMARY.md (phase report)
+
+Next: /ai-sdlc:verify-work [N]
+═══════════════════════════════════════════════════════════════
+```
