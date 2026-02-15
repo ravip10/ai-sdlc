@@ -233,6 +233,39 @@ This repo is the output target for PMCoach. PMCoach coaches PMs through spec cre
 See `examples/` for complete worked examples of the framework in action:
 - **jha-safety-forms/** — Mobile safety compliance forms for construction (shows specs, domain rules, planning, and implementation)
 
+## Reference
+
+### Commands → Agents
+
+| Command | Agents Used | Output |
+|---------|-------------|--------|
+| `/ai-sdlc:init` | — (interactive) | PROJECT.md, REQUIREMENTS.md, ROADMAP.md, STACK.md |
+| `/ai-sdlc:spec-draft` | — (interactive) | specs/jobs/*.md |
+| `/ai-sdlc:domain-capture` | — (interactive) | specs/domain/*.md |
+| `/ai-sdlc:spec-review` | designer-reviewer + engineer-reviewer + skeptic (parallel) | Review feedback |
+| `/ai-sdlc:design-phase` | — (interactive) | design/*.md |
+| `/ai-sdlc:discuss-phase` | — (interactive) | .planning/phases/[N]/CONTEXT.md |
+| `/ai-sdlc:plan-phase` | researcher → planner → plan-checker (sequential) | PLAN.md + PROMPT files |
+| `/ai-sdlc:execute-phase` | executor (Path A) OR prints Ralph instructions (Path B) | Code + PLAN.md updated |
+| `/ai-sdlc:verify-work` | verifier | UAT.md |
+| `/ai-sdlc:quick` | — (inline) | Code + commit |
+| `/ai-sdlc:progress` | — (reads state) | Status report |
+| `/ai-sdlc:map-codebase` | researcher | Codebase analysis |
+| `/ai-sdlc:generate-agents` | — | Rebuilds AGENTS.md |
+
+### Agents → Purpose
+
+| Agent | Called By | Purpose |
+|-------|-----------|---------|
+| researcher | plan-phase, map-codebase | Explore codebase, gather technical context |
+| planner | plan-phase | Generate PLAN.md as markdown checklist |
+| plan-checker | plan-phase | Validate PLAN.md completeness and ordering |
+| executor | execute-phase (Path A only) | Work through PLAN.md tasks inside Claude Code |
+| designer-reviewer | spec-review | Review specs for UX/design gaps |
+| engineer-reviewer | spec-review | Review specs for technical feasibility |
+| skeptic | spec-review | Challenge assumptions, find edge cases |
+| verifier | verify-work | UAT, check work against specs |
+
 ## Credits
 
 Built on patterns from:
