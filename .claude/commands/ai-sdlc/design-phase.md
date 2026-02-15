@@ -47,50 +47,87 @@ Spec: 02-admin-reviews-submissions
 
 ### Step 2: Generate Component Catalog
 
-Update `design/components.md` with reusable components:
+**Always use shadcn/ui components.** Map UI requirements to shadcn primitives.
+
+Update `design/components.md`:
 
 ```markdown
 # Components
 
+All components use [shadcn/ui](https://ui.shadcn.com/). Install with `npx shadcn@latest add [component]`.
+
 ## Form Controls
 
-### TextInput
-- **Props:** label, placeholder, error, required, disabled
-- **States:** default, focused, error, disabled
+### Input (shadcn: input)
+- **Usage:** Text fields, email, password
+- **With:** Label, FormMessage for errors
 - **Used in:** [spec-01]
 
-### DatePicker
-- **Props:** label, value, minDate, maxDate
-- **States:** closed, open, selected
+### DatePicker (shadcn: calendar + popover)
+- **Usage:** Date selection
+- **Pattern:** Button trigger → Popover → Calendar
 - **Used in:** [spec-01]
 
-### Checkbox
-- **Props:** label, checked, disabled
-- **States:** unchecked, checked, disabled
+### Checkbox (shadcn: checkbox)
+- **Usage:** Boolean toggles, multi-select
+- **With:** Label component
+- **Used in:** [spec-01]
+
+### Select (shadcn: select)
+- **Usage:** Dropdown selection
+- **Components:** SelectTrigger, SelectContent, SelectItem
 - **Used in:** [spec-01]
 
 ## Layout
 
-### Card
-- **Props:** title, children, actions
-- **Variants:** default, selected, error
+### Card (shadcn: card)
+- **Components:** Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter
 - **Used in:** [spec-01, spec-02]
 
-### Modal
-- **Props:** title, children, onClose
-- **States:** closed, open
+### Dialog (shadcn: dialog)
+- **Components:** Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription
 - **Used in:** [spec-01]
+
+### Sheet (shadcn: sheet)
+- **Usage:** Mobile-friendly slide-out panels
+- **Used in:** [spec-02]
 
 ## Feedback
 
-### Toast
-- **Props:** message, type (success/error/info)
-- **Behavior:** Auto-dismiss after 3s
+### Toast (shadcn: sonner)
+- **Usage:** toast.success(), toast.error(), toast.info()
+- **Config:** Toaster component in layout
 - **Used in:** [spec-01, spec-02]
 
-### LoadingSpinner
-- **Props:** size (sm/md/lg)
+### Skeleton (shadcn: skeleton)
+- **Usage:** Loading states
 - **Used in:** [spec-01, spec-02]
+
+### Alert (shadcn: alert)
+- **Variants:** default, destructive
+- **Components:** Alert, AlertTitle, AlertDescription
+- **Used in:** [spec-01]
+
+## Data Display
+
+### Table (shadcn: table)
+- **Components:** Table, TableHeader, TableBody, TableRow, TableHead, TableCell
+- **Used in:** [spec-02]
+
+### Badge (shadcn: badge)
+- **Variants:** default, secondary, destructive, outline
+- **Used in:** [spec-02]
+
+## Actions
+
+### Button (shadcn: button)
+- **Variants:** default, destructive, outline, secondary, ghost, link
+- **Sizes:** default, sm, lg, icon
+- **Used in:** [all specs]
+
+### DropdownMenu (shadcn: dropdown-menu)
+- **Usage:** Action menus, context menus
+- **Used in:** [spec-02]
 ```
 
 ### Step 3: Generate User Flows

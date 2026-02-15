@@ -27,7 +27,8 @@ Don't dump a wall of text. Keep it to 3-4 lines + the command suggestion.
 | Engineering | Engineer | `STACK.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `.planning/` | How it's built |
 
 **Rules:**
-- Never generate code without reading STACK.md first. Use ONLY the language, framework, and dependencies specified. Never default to React/Vite/HTML unless that's what STACK.md says.
+- Never generate code without reading STACK.md first. Use ONLY the language, framework, and dependencies specified.
+- **Always use shadcn/ui for all UI components.** No custom components when shadcn has an equivalent.
 - Never generate code for a feature that lacks a spec in `specs/jobs/`.
 - Never build UI without a corresponding entry in `design/`.
 - Always ask "has the PM spec'd this?" before planning.
